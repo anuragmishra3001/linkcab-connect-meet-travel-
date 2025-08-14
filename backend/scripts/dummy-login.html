@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkCab Dummy Login</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .header h1 {
+      color: #1a202c;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #718096;
+      margin-top: 0;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #4a5568;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    input:focus {
+      outline: none;
+      border-color: #4299e1;
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+    }
+    button {
+      background-color: #4299e1;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      font-weight: 500;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #3182ce;
+    }
+    button:disabled {
+      background-color: #a0aec0;
+      cursor: not-allowed;
+    }
+    .error {
+      background-color: #fed7d7;
+      border: 1px solid #feb2b2;
+      color: #c53030;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+    .success {
+      background-color: #c6f6d5;
+      border: 1px solid #9ae6b4;
+      color: #276749;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+    .credentials {
+      background-color: #e6fffa;
+      border: 1px solid #b2f5ea;
+      color: #234e52;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+    .credentials p {
+      margin: 0.25rem 0;
+    }
+    .credentials strong {
+      font-weight: 600;
+    }
+    .tabs {
+      display: flex;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .tab {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab.active {
+      border-bottom: 2px solid #4299e1;
+      color: #4299e1;
+      font-weight: 500;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>LinkCab Dummy Login</h1>
+      <p>Use this page to test the login functionality</p>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="login">Login</div>
+      <div class="tab" data-tab="signup">Signup</div>
+    </div>
+
+    <div id="error" class="error" style="display: none;"></div>
+    <div id="success" class="success" style="display: none;"></div>
+
+    <div id="login-tab" class="tab-content active">
+      <div class="credentials">
+        <p><strong>Demo Credentials:</strong></p>
+        <p>Phone: +1234567890</p>
+        <p>Password: password123</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="login-phone">Phone Number</label>
+          <input type="tel" id="login-phone" name="phone" value="+1234567890" required placeholder="+1234567890">
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" value="password123" required placeholder="Enter your password">
+        </div>
+
+        <button type="submit" id="loginButton">Sign In</button>
+      </form>
+    </div>
+
+    <div id="signup-tab" class="tab-content">
+      <form id="signupForm">
+        <div class="form-group">
+          <label for="signup-name">Full Name</label>
+          <input type="text" id="signup-name" name="name" required placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+          <label for="signup-phone">Phone Number</label>
+          <input type="tel" id="signup-phone" name="phone" required placeholder="+1234567890">
+        </div>
+
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" name="email" required placeholder="Enter your email">
+        </div>
+
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" name="password" required placeholder="Enter your password">
+        </div>
+
+        <div class="form-group">
+          <label for="signup-age">Age</label>
+          <input type="number" id="signup-age" name="age" required placeholder="Enter your age">
+        </div>
+
+        <div class="form-group">
+          <label for="signup-gender">Gender</label>
+          <select id="signup-gender" name="gender" required>
+            <option value="">Select gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="prefer-not-to-say">Prefer not to say</option>
+          </select>
+        </div>
+
+        <button type="submit" id="signupButton">Sign Up</button>
+      </form>
+    </div>
+
+    <div id="userInfo" style="margin-top: 2rem; display: none;">
+      <h3>User Information</h3>
+      <pre id="userInfoData" style="background-color: #f7fafc; padding: 1rem; border-radius: 4px; overflow: auto;"></pre>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab switching
+      const tabs = document.querySelectorAll('.tab');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const tabId = this.getAttribute('data-tab');
+          
+          // Remove active class from all tabs and contents
+          tabs.forEach(t => t.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+          
+          // Add active class to current tab and content
+          this.classList.add('active');
+          document.getElementById(`${tabId}-tab`).classList.add('active');
+          
+          // Hide error and success messages when switching tabs
+          document.getElementById('error').style.display = 'none';
+          document.getElementById('success').style.display = 'none';
+        });
+      });
+
+      // Form elements
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const errorDiv = document.getElementById('error');
+      const successDiv = document.getElementById('success');
+      const userInfoDiv = document.getElementById('userInfo');
+      const userInfoData = document.getElementById('userInfoData');
+      const loginButton = document.getElementById('loginButton');
+      const signupButton = document.getElementById('signupButton');
+
+      // API URL
+      const API_URL = 'http://localhost:5000/api';
+
+      // Login form submission
+      loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Hide previous messages
+        errorDiv.style.display = 'none';
+        successDiv.style.display = 'none';
+        userInfoDiv.style.display = 'none';
+        
+        // Get form data
+        const phone = document.getElementById('login-phone').value;
+        const password = document.getElementById('login-password').value;
+        
+        // Disable button
+        loginButton.disabled = true;
+        loginButton.textContent = 'Signing In...';
+        
+        try {
+          // Make login request
+          const response = await fetch(`${API_URL}/auth/login`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ phone, password })
+          });
+          
+          const data = await response.json();
+          
+          if (!response.ok) {
+            throw new Error(data.message || 'Login failed');
+          }
+          
+          // Show success message
+          successDiv.textContent = 'Login successful!';
+          successDiv.style.display = 'block';
+          
+          // Store token in localStorage
+          localStorage.setItem('token', data.data.token);
+          localStorage.setItem('user', JSON.stringify(data.data.user));
+          
+          // Display user info
+          userInfoData.textContent = JSON.stringify(data.data.user, null, 2);
+          userInfoDiv.style.display = 'block';
+          
+        } catch (error) {
+          // Show error message
+          errorDiv.textContent = error.message;
+          errorDiv.style.display = 'block';
+        } finally {
+          // Re-enable button
+          loginButton.disabled = false;
+          loginButton.textContent = 'Sign In';
+        }
+      });
+
+      // Signup form submission
+      signupForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Hide previous messages
+        errorDiv.style.display = 'none';
+        successDiv.style.display = 'none';
+        userInfoDiv.style.display = 'none';
+        
+        // Get form data
+        const userData = {
+          name: document.getElementById('signup-name').value,
+          phone: document.getElementById('signup-phone').value,
+          email: document.getElementById('signup-email').value,
+          password: document.getElementById('signup-password').value,
+          age: document.getElementById('signup-age').value,
+          gender: document.getElementById('signup-gender').value,
+          isPhoneVerified: true, // Skip verification for demo
+          isEmailVerified: true  // Skip verification for demo
+        };
+        
+        // Disable button
+        signupButton.disabled = true;
+        signupButton.textContent = 'Signing Up...';
+        
+        try {
+          // Make signup request
+          const response = await fetch(`${API_URL}/auth/signup`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+          });
+          
+          const data = await response.json();
+          
+          if (!response.ok) {
+            throw new Error(data.message || 'Signup failed');
+          }
+          
+          // Show success message
+          successDiv.textContent = 'Signup successful! You can now log in with your credentials.';
+          successDiv.style.display = 'block';
+          
+          // Switch to login tab
+          setTimeout(() => {
+            document.querySelector('.tab[data-tab="login"]').click();
+            document.getElementById('login-phone').value = userData.phone;
+            document.getElementById('login-password').value = userData.password;
+          }, 2000);
+          
+        } catch (error) {
+          // Show error message
+          errorDiv.textContent = error.message;
+          errorDiv.style.display = 'block';
+        } finally {
+          // Re-enable button
+          signupButton.disabled = false;
+          signupButton.textContent = 'Sign Up';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

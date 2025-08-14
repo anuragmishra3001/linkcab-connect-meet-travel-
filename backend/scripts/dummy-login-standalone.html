@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkCab Dummy Login (Standalone)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .header h1 {
+      color: #1a202c;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      color: #718096;
+      margin-top: 0;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #4a5568;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    input:focus {
+      outline: none;
+      border-color: #4299e1;
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+    }
+    button {
+      background-color: #4299e1;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      font-weight: 500;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #3182ce;
+    }
+    button:disabled {
+      background-color: #a0aec0;
+      cursor: not-allowed;
+    }
+    .error {
+      background-color: #fed7d7;
+      border: 1px solid #feb2b2;
+      color: #c53030;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+    .success {
+      background-color: #c6f6d5;
+      border: 1px solid #9ae6b4;
+      color: #276749;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+    .credentials {
+      background-color: #e6fffa;
+      border: 1px solid #b2f5ea;
+      color: #234e52;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+    .credentials p {
+      margin: 0.25rem 0;
+    }
+    .credentials strong {
+      font-weight: 600;
+    }
+    .tabs {
+      display: flex;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .tab {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab.active {
+      border-bottom: 2px solid #4299e1;
+      color: #4299e1;
+      font-weight: 500;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .note {
+      background-color: #ebf8ff;
+      border: 1px solid #bee3f8;
+      color: #2c5282;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+    .user-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .user-card h3 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      color: #2d3748;
+    }
+    .user-card p {
+      margin: 0.25rem 0;
+      color: #4a5568;
+    }
+    .user-card .label {
+      font-weight: 500;
+      color: #718096;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>LinkCab Dummy Login</h1>
+      <p>Standalone Demo (No Backend Required)</p>
+    </div>
+
+    <div class="note">
+      <p><strong>Note:</strong> This is a standalone demo that simulates the login experience without requiring a backend server. The credentials are hardcoded for demonstration purposes.</p>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="login">Login</div>
+      <div class="tab" data-tab="explore">Explore App</div>
+    </div>
+
+    <div id="error" class="error" style="display: none;"></div>
+    <div id="success" class="success" style="display: none;"></div>
+
+    <div id="login-tab" class="tab-content active">
+      <div class="credentials">
+        <p><strong>Demo Credentials:</strong></p>
+        <p>Phone: +1234567890</p>
+        <p>Password: password123</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="login-phone">Phone Number</label>
+          <input type="tel" id="login-phone" name="phone" value="+1234567890" required placeholder="+1234567890">
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" value="password123" required placeholder="Enter your password">
+        </div>
+
+        <button type="submit" id="loginButton">Sign In</button>
+      </form>
+    </div>
+
+    <div id="explore-tab" class="tab-content">
+      <h3>Application Features</h3>
+      
+      <div class="user-card">
+        <h3>User Profile</h3>
+        <p><span class="label">Name:</span> Demo User</p>
+        <p><span class="label">Phone:</span> +1234567890</p>
+        <p><span class="label">Email:</span> demo@example.com</p>
+        <p><span class="label">Age:</span> 25</p>
+        <p><span class="label">Gender:</span> Prefer not to say</p>
+        <p><span class="label">Rating:</span> 4.5/5</p>
+        <p><span class="label">Total Rides:</span> 15</p>
+      </div>
+
+      <div class="user-card">
+        <h3>Ride History</h3>
+        <p><strong>Recent Ride:</strong> Downtown to Airport</p>
+        <p><span class="label">Date:</span> May 15, 2023</p>
+        <p><span class="label">Distance:</span> 12.5 miles</p>
+        <p><span class="label">Cost:</span> $25.50</p>
+        <p><span class="label">Driver:</span> John Doe (4.8/5)</p>
+      </div>
+
+      <div class="user-card">
+        <h3>Preferences</h3>
+        <p><span class="label">Smoking:</span> No</p>
+        <p><span class="label">Music:</span> Yes</p>
+        <p><span class="label">Pets:</span> Yes</p>
+      </div>
+
+      <button id="logoutButton" style="margin-top: 1rem;">Sign Out</button>
+    </div>
+
+    <div id="userInfo" style="margin-top: 2rem; display: none;">
+      <h3>User Information</h3>
+      <pre id="userInfoData" style="background-color: #f7fafc; padding: 1rem; border-radius: 4px; overflow: auto;"></pre>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab switching
+      const tabs = document.querySelectorAll('.tab');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const tabId = this.getAttribute('data-tab');
+          
+          // Remove active class from all tabs and contents
+          tabs.forEach(t => t.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+          
+          // Add active class to current tab and content
+          this.classList.add('active');
+          document.getElementById(`${tabId}-tab`).classList.add('active');
+          
+          // Hide error and success messages when switching tabs
+          document.getElementById('error').style.display = 'none';
+          document.getElementById('success').style.display = 'none';
+        });
+      });
+
+      // Form elements
+      const loginForm = document.getElementById('loginForm');
+      const errorDiv = document.getElementById('error');
+      const successDiv = document.getElementById('success');
+      const userInfoDiv = document.getElementById('userInfo');
+      const userInfoData = document.getElementById('userInfoData');
+      const loginButton = document.getElementById('loginButton');
+      const logoutButton = document.getElementById('logoutButton');
+
+      // Demo user data
+      const demoUser = {
+        id: "user123",
+        name: "Demo User",
+        phone: "+1234567890",
+        email: "demo@example.com",
+        age: 25,
+        gender: "prefer-not-to-say",
+        isPhoneVerified: true,
+        isEmailVerified: true,
+        rating: 4.5,
+        totalRides: 15,
+        bio: "This is a demo account for testing purposes",
+        preferences: {
+          smoking: false,
+          music: true,
+          pets: true
+        },
+        emergencyContact: {
+          name: "Emergency Contact",
+          phone: "+1987654321",
+          relationship: "Friend"
+        },
+        createdAt: "2023-01-01T00:00:00.000Z",
+        updatedAt: "2023-05-15T00:00:00.000Z"
+      };
+
+      // Demo token
+      const demoToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxMjMiLCJwaG9uZSI6IisxMjM0NTY3ODkwIiwiaWF0IjoxNjE2MTYyMjIyLCJleHAiOjE2MTYyNDg2MjJ9.dummySignature";
+
+      // Login form submission
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Hide previous messages
+        errorDiv.style.display = 'none';
+        successDiv.style.display = 'none';
+        userInfoDiv.style.display = 'none';
+        
+        // Get form data
+        const phone = document.getElementById('login-phone').value;
+        const password = document.getElementById('login-password').value;
+        
+        // Disable button
+        loginButton.disabled = true;
+        loginButton.textContent = 'Signing In...';
+        
+        // Simulate API call delay
+        setTimeout(() => {
+          // Check credentials
+          if (phone === '+1234567890' && password === 'password123') {
+            // Show success message
+            successDiv.textContent = 'Login successful!';
+            successDiv.style.display = 'block';
+            
+            // Store token in localStorage
+            localStorage.setItem('token', demoToken);
+            localStorage.setItem('user', JSON.stringify(demoUser));
+            
+            // Display user info
+            userInfoData.textContent = JSON.stringify(demoUser, null, 2);
+            userInfoDiv.style.display = 'block';
+            
+            // Switch to explore tab after a delay
+            setTimeout(() => {
+              document.querySelector('.tab[data-tab="explore"]').click();
+            }, 1500);
+          } else {
+            // Show error message
+            errorDiv.textContent = 'Invalid credentials. Please use the demo credentials provided.';
+            errorDiv.style.display = 'block';
+          }
+          
+          // Re-enable button
+          loginButton.disabled = false;
+          loginButton.textContent = 'Sign In';
+        }, 1000);
+      });
+
+      // Logout button
+      logoutButton.addEventListener('click', function() {
+        // Clear localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
+        // Show success message
+        successDiv.textContent = 'Logged out successfully!';
+        successDiv.style.display = 'block';
+        
+        // Switch to login tab
+        document.querySelector('.tab[data-tab="login"]').click();
+      });
+
+      // Check if user is already logged in
+      const storedToken = localStorage.getItem('token');
+      const storedUser = localStorage.getItem('user');
+      
+      if (storedToken && storedUser) {
+        try {
+          const user = JSON.parse(storedUser);
+          
+          // Display user info
+          userInfoData.textContent = JSON.stringify(user, null, 2);
+          userInfoDiv.style.display = 'block';
+          
+          // Switch to explore tab
+          document.querySelector('.tab[data-tab="explore"]').click();
+        } catch (error) {
+          console.error('Error parsing stored user:', error);
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
