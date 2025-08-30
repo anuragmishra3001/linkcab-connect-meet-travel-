@@ -16,7 +16,6 @@
     }
   ],
   "env": {
-    "VITE_API_URL": "@vite_api_url",
     "VITE_DEV_MODE": "false"
   }
 }
