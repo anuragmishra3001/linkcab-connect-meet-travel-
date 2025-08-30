@@ -7,8 +7,5 @@ nixPkgs = ["nodejs-18_x"]
 [phases.install]
 cmd = "npm ci --only=production"
 
-[phases.build]
-cmd = "echo 'Backend ready'"
-
 [start]
 cmd = "npm start"
