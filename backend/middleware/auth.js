@@ -1,5 +1,17 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+
+// Development mode check
+const isDevMode = process.env.NODE_ENV !== 'production' && !process.env.DB_HOST;
+
+// Conditional imports for production
+let User;
+if (!isDevMode) {
+  try {
+    User = (await import('../models/User.js')).default;
+  } catch (error) {
+    console.log('⚠️ Could not import User model for auth middleware:', error.message);
+  }
+}
 
 // Middleware to protect routes
 export const protect = async (req, res, next) => {
@@ -19,7 +31,44 @@ export const protect = async (req, res, next) => {
     }
 
     try {
-      // Verify token
+      // Development mode: Accept any token
+      if (isDevMode) {
+        req.user = {
+          _id: 'dev-user-123',
+          name: 'John Doe',
+          phone: '+1234567890',
+          email: 'john.doe@example.com',
+          age: 28,
+          gender: 'male',
+          isPhoneVerified: true,
+          rating: 4.8,
+          totalRides: 15,
+          isSubscribed: false,
+          subscription: null,
+          bio: 'I love traveling and meeting new people!',
+          preferences: {
+            smoking: false,
+            music: true,
+            pets: false
+          },
+          emergencyContact: {
+            name: 'Jane Doe',
+            phone: '+1987654321',
+            relationship: 'Sister'
+          },
+          createdAt: new Date().toISOString()
+        };
+        return next();
+      }
+      
+      // Production mode: Verify token
+      if (!User) {
+        return res.status(500).json({
+          success: false,
+          message: 'User model not available'
+        });
+      }
+      
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       
       // Get user from token
@@ -77,9 +126,43 @@ export const optionalAuth = async (req, res, next) => {
 
     if (token) {
       try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(decoded.id).select('-password');
-        req.user = user;
+        // Development mode: Create mock user
+        if (isDevMode) {
+          req.user = {
+            _id: 'dev-user-123',
+            name: 'John Doe',
+            phone: '+1234567890',
+            email: 'john.doe@example.com',
+            age: 28,
+            gender: 'male',
+            isPhoneVerified: true,
+            rating: 4.8,
+            totalRides: 15,
+            isSubscribed: false,
+            subscription: null,
+            bio: 'I love traveling and meeting new people!',
+            preferences: {
+              smoking: false,
+              music: true,
+              pets: false
+            },
+            emergencyContact: {
+              name: 'Jane Doe',
+              phone: '+1987654321',
+              relationship: 'Sister'
+            },
+            createdAt: new Date().toISOString()
+          };
+        } else {
+          // Production mode
+          if (!User) {
+            req.user = null;
+          } else {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const user = await User.findById(decoded.id).select('-password');
+            req.user = user;
+          }
+        }
       } catch (error) {
         // Token is invalid, but we don't fail the request
         req.user = null;

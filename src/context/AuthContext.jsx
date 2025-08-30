@@ -4,8 +4,9 @@ import { subscriptionService, checkPremiumAccess } from '../services/subscriptio
 
 const AuthContext = createContext();
 
-// Development mode flag - set to true for testing
-const DEV_MODE = true;
+// Production mode - no development mode
+const DEV_MODE = false;
+console.log('🔍 DEV_MODE is set to:', DEV_MODE);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -286,7 +287,7 @@ export const AuthProvider = ({ children }) => {
     clearError,
     isAuthenticated: !!user,
     isPhoneVerified: user?.isPhoneVerified || false,
-    isDevMode: DEV_MODE,
+    isDevMode: false, // Force production mode
   };
 
   return (

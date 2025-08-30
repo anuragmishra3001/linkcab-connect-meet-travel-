@@ -8,13 +8,6 @@ import connectDB from './config/database.js';
 import configureSocket from './config/socket.js';
 import authRoutes from './routes/auth.js';
 import profileRoutes from './routes/profile.js';
-import chatRoutes from './routes/chat.js';
-import rideRoutes from './routes/ride.js';
-import paymentRoutes from './routes/payment.js';
-import razorpayRoutes from './routes/razorpay.js';
-import reviewRoutes from './routes/review.js';
-import matchRoutes from './routes/match.js';
-import subscriptionRoutes from './routes/subscription.js';
 
 // Load environment variables
 dotenv.config();
@@ -26,17 +19,19 @@ const PORT = process.env.PORT || 5000;
 // Initialize Socket.IO
 const io = configureSocket(httpServer);
 
-// Connect to MongoDB
+// Connect to database
 connectDB();
 
 // Security middleware
 app.use(helmet());
 
 // CORS configuration
+const allowedOrigins = process.env.FRONTEND_URL ? 
+  process.env.FRONTEND_URL.split(',') : 
+  ['http://localhost:3000', 'http://localhost:5173'];
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? [process.env.FRONTEND_URL] 
-    : ['http://localhost:3000', 'http://localhost:5173'],
+  origin: allowedOrigins,
   credentials: true
 }));
 
@@ -57,20 +52,36 @@ app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK', 
     message: 'LinkCab API is running',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
   });
 });
 
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/profile', profileRoutes);
-app.use('/api/chat', chatRoutes);
-app.use('/api/ride', rideRoutes);
-app.use('/api/payment', paymentRoutes);
-app.use('/api/payment/razorpay', razorpayRoutes);
-app.use('/api/review', reviewRoutes);
-app.use('/api/match', matchRoutes);
-app.use('/api/subscription', subscriptionRoutes);
+// Load all API routes
+try {
+  const chatRoutes = await import('./routes/chat.js');
+  const rideRoutes = await import('./routes/ride.js');
+  const paymentRoutes = await import('./routes/payment.js');
+  const razorpayRoutes = await import('./routes/razorpay.js');
+  const reviewRoutes = await import('./routes/review.js');
+  const matchRoutes = await import('./routes/match.js');
+  const subscriptionRoutes = await import('./routes/subscription.js');
+  
+  app.use('/api/auth', authRoutes);
+  app.use('/api/profile', profileRoutes);
+  app.use('/api/chat', chatRoutes.default);
+  app.use('/api/ride', rideRoutes.default);
+  app.use('/api/payment', paymentRoutes.default);
+  app.use('/api/payment/razorpay', razorpayRoutes.default);
+  app.use('/api/review', reviewRoutes.default);
+  app.use('/api/match', matchRoutes.default);
+  app.use('/api/subscription', subscriptionRoutes.default);
+  
+  console.log('✅ All API routes loaded successfully');
+} catch (error) {
+  console.error('❌ Error loading routes:', error.message);
+  process.exit(1);
+}
 
 // Make io accessible to route handlers
 app.set('io', io);
@@ -98,4 +109,5 @@ httpServer.listen(PORT, () => {
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
   console.log(`🔌 Socket.IO initialized`);
+  console.log(`📡 CORS enabled for: ${allowedOrigins.join(', ')}`);
 });

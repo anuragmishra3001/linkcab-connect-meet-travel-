@@ -1,9 +1,21 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
-import User from '../models/User.js';
 import { protect, requireVerification } from '../middleware/auth.js';
 
 const router = express.Router();
+
+// Development mode check
+const isDevMode = process.env.NODE_ENV !== 'production' && !process.env.DB_HOST;
+
+// Conditional imports for production
+let User;
+if (!isDevMode) {
+  try {
+    User = (await import('../models/User.js')).default;
+  } catch (error) {
+    console.log('⚠️ Could not import User model:', error.message);
+  }
+}
 
 // Validation middleware
 const validateProfileUpdate = [
@@ -42,6 +54,50 @@ const handleValidationErrors = (req, res, next) => {
 // @access  Private
 router.get('/', protect, async (req, res) => {
   try {
+    // Development mode: Mock profile
+    if (isDevMode) {
+      const mockUser = {
+        _id: req.user._id || 'dev-user-123',
+        name: 'John Doe',
+        phone: '+1234567890',
+        email: 'john.doe@example.com',
+        age: 28,
+        gender: 'male',
+        isPhoneVerified: true,
+        rating: 4.8,
+        totalRides: 15,
+        isSubscribed: false,
+        subscription: null,
+        bio: 'I love traveling and meeting new people!',
+        preferences: {
+          smoking: false,
+          music: true,
+          pets: false
+        },
+        emergencyContact: {
+          name: 'Jane Doe',
+          phone: '+1987654321',
+          relationship: 'Sister'
+        },
+        createdAt: new Date().toISOString()
+      };
+      
+      return res.json({
+        success: true,
+        data: {
+          user: mockUser
+        }
+      });
+    }
+
+    // Production mode
+    if (!User) {
+      return res.status(500).json({
+        success: false,
+        message: 'Database model not available'
+      });
+    }
+
     const user = await User.findById(req.user._id).select('-password');
     
     if (!user) {

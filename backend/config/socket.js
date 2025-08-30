@@ -1,7 +1,19 @@
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
-import Message from '../models/Message.js';
-import User from '../models/User.js';
+
+// Development mode check
+const isDevMode = process.env.NODE_ENV !== 'production' && !process.env.DB_HOST;
+
+// Conditional imports for production
+let Message, User;
+if (!isDevMode) {
+  try {
+    Message = (await import('../models/Message.js')).default;
+    User = (await import('../models/User.js')).default;
+  } catch (error) {
+    console.log('⚠️ Could not import models for socket:', error.message);
+  }
+}
 
 // Socket.IO configuration and event handlers
 const configureSocket = (server) => {
@@ -24,10 +36,22 @@ const configureSocket = (server) => {
         return next(new Error('Authentication error: Token not provided'));
       }
       
-      // Verify JWT token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // Development mode: Accept any token
+      if (isDevMode) {
+        socket.user = {
+          _id: 'dev-user-123',
+          name: 'John Doe',
+          avatar: null
+        };
+        return next();
+      }
       
-      // Find user by ID
+      // Production mode: Verify JWT token
+      if (!User) {
+        return next(new Error('Authentication error: User model not available'));
+      }
+      
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await User.findById(decoded.id).select('-password');
       
       if (!user) {
@@ -54,7 +78,25 @@ const configureSocket = (server) => {
         socket.join(rideId);
         console.log(`User ${socket.user._id} joined room: ${rideId}`);
         
-        // Fetch previous messages for this ride
+        // Development mode: Send empty messages
+        if (isDevMode) {
+          socket.emit('previousMessages', []);
+          socket.to(rideId).emit('userJoined', {
+            user: {
+              _id: socket.user._id,
+              name: socket.user.name
+            },
+            message: `${socket.user.name} has joined the chat`
+          });
+          return;
+        }
+        
+        // Production mode: Fetch previous messages
+        if (!Message) {
+          socket.emit('previousMessages', []);
+          return;
+        }
+        
         const messages = await Message.find({ rideId })
           .sort({ timestamp: 1 })
           .populate('sender', 'name avatar');
@@ -98,7 +140,31 @@ const configureSocket = (server) => {
           return socket.emit('error', { message: 'Message cannot be empty' });
         }
         
-        // Create a new message
+        // Development mode: Create mock message
+        if (isDevMode) {
+          const mockMessage = {
+            _id: 'dev-message-' + Date.now(),
+            rideId,
+            sender: {
+              _id: socket.user._id,
+              name: socket.user.name,
+              avatar: socket.user.avatar
+            },
+            content,
+            timestamp: new Date()
+          };
+          
+          // Broadcast message to all users in the room
+          io.to(rideId).emit('newMessage', mockMessage);
+          return;
+        }
+        
+        // Production mode: Save message to database
+        if (!Message) {
+          socket.emit('error', { message: 'Message model not available' });
+          return;
+        }
+        
         const newMessage = new Message({
           rideId,
           sender: socket.user._id,
