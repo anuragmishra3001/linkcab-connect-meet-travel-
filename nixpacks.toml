@@ -1,0 +1,23 @@
+[build]
+# Set the build command to install dependencies in the backend directory
+cmd = "cd backend && npm ci --only=production"
+
+[start]
+# Set the start command to run the backend server
+cmd = "cd backend && npm start"
+
+[variables]
+# Set Node.js version
+NODE_VERSION = "18"
+
+[phases.setup]
+# Setup phase to prepare the environment
+nixPkgs = ["nodejs-18_x", "npm-9_x"]
+
+[phases.install]
+# Install dependencies in the backend directory
+cmd = "cd backend && npm ci --only=production"
+
+[phases.build]
+# Build phase (not needed for backend, but required by nixpacks)
+cmd = "echo 'Backend ready for deployment'"
