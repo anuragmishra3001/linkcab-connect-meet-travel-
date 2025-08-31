@@ -1,27 +1,35 @@
-import { sequelize } from '../config/database.js';
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 import User from '../models/User.js';
 import Ride from '../models/Ride.js';
-import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const seed = async () => {
   try {
-    console.log('🌱 Starting database seeding...');
+    console.log('🌱 Starting MongoDB database seeding...');
     
-    // Test database connection
-    await sequelize.authenticate();
-    console.log('✅ Database connection established');
+    // Connect to MongoDB
+    if (!process.env.MONGODB_URI) {
+      console.error('❌ MONGODB_URI environment variable is required');
+      process.exit(1);
+    }
+    
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('✅ MongoDB connection established');
     
     // Clear existing data
     console.log('🧹 Clearing existing data...');
-    await Ride.destroy({ where: {} });
-    await User.destroy({ where: {} });
+    await Ride.deleteMany({});
+    await User.deleteMany({});
     
     // Create test users
     console.log('👥 Creating test users...');
     
     const hashedPassword = await bcrypt.hash('password123', 12);
     
-    const users = await User.bulkCreate([
+    const users = await User.create([
       {
         name: 'John Doe',
         phone: '+919876543210',
@@ -109,16 +117,16 @@ const seed = async () => {
     // Create test rides
     console.log('🚗 Creating test rides...');
     
-    const rides = await Ride.bulkCreate([
+    const rides = await Ride.create([
       {
-        driverId: users[0].id,
-        passengerId: users[1].id,
-        pickupLocation: {
+        driverId: users[0]._id,
+        passengerId: users[1]._id,
+        startLocation: {
           lat: 28.6139,
           lng: 77.2090,
           address: 'Connaught Place, New Delhi'
         },
-        dropoffLocation: {
+        endLocation: {
           lat: 28.7041,
           lng: 77.1025,
           address: 'North Campus, Delhi University'
@@ -135,14 +143,14 @@ const seed = async () => {
         notes: 'Great ride, punctual driver!'
       },
       {
-        driverId: users[2].id,
-        passengerId: users[0].id,
-        pickupLocation: {
+        driverId: users[2]._id,
+        passengerId: users[0]._id,
+        startLocation: {
           lat: 19.0760,
           lng: 72.8777,
           address: 'Bandra West, Mumbai'
         },
-        dropoffLocation: {
+        endLocation: {
           lat: 19.2183,
           lng: 72.9781,
           address: 'Andheri West, Mumbai'
@@ -158,14 +166,14 @@ const seed = async () => {
         notes: 'On the way to pickup location'
       },
       {
-        driverId: users[1].id,
-        passengerId: users[2].id,
-        pickupLocation: {
+        driverId: users[1]._id,
+        passengerId: users[2]._id,
+        startLocation: {
           lat: 12.9716,
           lng: 77.5946,
           address: 'MG Road, Bangalore'
         },
-        dropoffLocation: {
+        endLocation: {
           lat: 13.0827,
           lng: 77.5877,
           address: 'Indiranagar, Bangalore'
@@ -182,13 +190,13 @@ const seed = async () => {
     ]);
     
     console.log(`✅ Created ${rides.length} test rides`);
-    console.log('🎉 Database seeding completed successfully!');
+    console.log('🎉 MongoDB database seeding completed successfully!');
     
   } catch (error) {
     console.error('❌ Seeding failed:', error);
     process.exit(1);
   } finally {
-    await sequelize.close();
+    await mongoose.connection.close();
   }
 };
 
