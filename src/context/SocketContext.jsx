@@ -24,7 +24,7 @@ export const SocketProvider = ({ children }) => {
     // Only connect if user is logged in
     if (user) {
       const token = localStorage.getItem('token');
-      const SOCKET_URL = import.meta.env.VITE_APP_SOCKET_URL || 'http://localhost:5000';
+      const SOCKET_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       
       // Initialize socket with auth token
       socketInstance = io(SOCKET_URL, {
