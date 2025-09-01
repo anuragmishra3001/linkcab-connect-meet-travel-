@@ -1,6 +1,6 @@
 # LinkCab - Full-Stack Ride-Sharing Platform
 
-A complete ride-sharing platform built with React frontend and Node.js backend, featuring mobile OTP authentication, JWT tokens, MongoDB integration, and modern animated UI components.
+A complete ride-sharing platform built with React frontend and Node.js backend, featuring mobile OTP authentication, JWT tokens, MongoDB integration, modern animated UI components, and **enterprise-grade crash prevention**.
 
 ## 🚀 Features
 
@@ -31,6 +31,16 @@ A complete ride-sharing platform built with React frontend and Node.js backend, 
 - 🤖 **AI Integration** - OpenAI API for smart features
 - 📧 **Email Services** - SMTP email functionality
 - 📱 **SMS Services** - OTP delivery system
+
+### 🛡️ **Enterprise Stability & Crash Prevention**
+- 🚨 **Graceful Shutdown** - Proper cleanup on Railway restarts
+- 🔄 **Auto-Reconnection** - MongoDB connection recovery
+- 💾 **Memory Management** - Optimized upload limits and monitoring
+- 🛡️ **Error Handling** - Global error handlers that prevent crashes
+- 📊 **Health Monitoring** - Real-time memory and connection monitoring
+- 🔌 **Connection Pooling** - Optimized database connections
+- ⚡ **Rate Limiting** - Production-ready API throttling
+- 🚀 **Railway Optimized** - Built for cloud deployment stability
 
 ## 🛠️ Tech Stack
 
@@ -85,556 +95,130 @@ linkcab/
 │   ├── utils/            # Utility functions
 │   └── config/           # Configuration files
 ├── backend/               # Node.js backend
-│   ├── config/           # Database configuration
+│   ├── config/           # Database configuration with crash prevention
 │   ├── middleware/       # Express middleware
 │   ├── models/          # MongoDB models
 │   ├── routes/          # API routes
+│   ├── server.js        # Enhanced server with stability features
+│   ├── env.railway      # Railway production environment
+│   ├── deploy-railway.bat # Automated Railway deployment
+│   ├── test-connection.js # Database connection testing
 │   └── package.json
 └── package.json
 ```
 
-## 🎨 Modern Graphics Components
+## 🛡️ Stability & Monitoring
 
-The project includes a comprehensive set of modern, animated UI components:
-
-### Core Graphics Components
-- **GradientBackground** - Animated gradient backgrounds with radial effects
-- **FloatingShapes** - Dynamic geometric shapes with smooth animations
-- **ModernIcon** - Interactive icons with hover and tap animations
-- **AnimatedProgressBar** - Smooth progress indicators with shimmer effects
-- **GlassCard** - Glassmorphism cards with backdrop blur
-- **AnimatedCounter** - Number counters with smooth counting animations
-- **ModernBadge** - Gradient badges with hover effects
-- **WaveEffect** - Animated wave SVG backgrounds
-- **ModernSpinner** - Custom loading spinners
-- **ParticleBackground** - Floating particle effects
-- **AnimatedGradientText** - Text with animated gradient backgrounds
-- **SmoothScrollIndicator** - Scroll-to-top button with animations
-
-### Animation Features
-- **Framer Motion Integration** - Professional-grade animations
-- **Performance Optimized** - Efficient animation rendering
-- **Responsive Design** - Works on all screen sizes
-- **Customizable** - Easy to modify colors, sizes, and effects
-- **Accessibility** - Respects user motion preferences
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB (local or cloud instance)
-- npm or yarn
-- Git (for version control and deployment)
-
-### Frontend Setup
-
-1. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-2. **Start development server**
-   ```bash
-   npm run dev
-   ```
-
-3. **Open browser**
-   Navigate to `http://localhost:5173`
-
-### Backend Setup
-
-1. **Navigate to backend directory**
-   ```bash
-   cd backend
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   cp env.example .env
-   ```
-   
-   Edit `.env` file:
-   ```env
-   # Server Configuration
-   PORT=5000
-   NODE_ENV=development
-
-   # MongoDB Connection
-   MONGODB_URI=mongodb://localhost:27017/linkcab
-
-   # JWT Secret
-   JWT_SECRET=your_jwt_secret_here
-   JWT_EXPIRE=30d
-
-   # Rate Limiting
-   RATE_LIMIT_WINDOW=900000  # 15 minutes in milliseconds
-   RATE_LIMIT_MAX=100        # Maximum 100 requests per window
-
-   # Stripe Configuration
-   STRIPE_SECRET_KEY=your_stripe_secret_key_here
-   STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret_here
-   FRONTEND_URL=http://localhost:5173
-
-   # OpenAI API Configuration
-   OPENAI_API_KEY=your_openai_api_key_here
-
-   # SMS Service (for OTP)
-   SMS_API_KEY=your_sms_api_key_here
-
-   # Email Service
-   EMAIL_SERVICE=smtp
-   EMAIL_HOST=smtp.example.com
-   EMAIL_PORT=587
-   EMAIL_USER=your_email_username
-   EMAIL_PASS=your_email_password
-   EMAIL_FROM=noreply@linkcab.com
-
-   # Razorpay Configuration
-   RAZORPAY_KEY_ID=your_razorpay_key_id
-   RAZORPAY_KEY_SECRET=your_razorpay_secret_key
-   ```
-
-4. **MongoDB Setup**
-   - **Verify MongoDB Installation**
-     ```bash
-     # Check MongoDB version
-     mongod --version
-     ```
-   
-   - **Start MongoDB Service** (if using local instance)
-     ```bash
-     # Windows
-     # Check if MongoDB service is running
-     Get-Service -Name MongoDB* | Select-Object Name, Status
-     
-     # Start MongoDB service if not running
-     Start-Service -Name MongoDB
-     
-     # macOS/Linux
-     sudo systemctl start mongod
-     ```
-   
-   - **Verify MongoDB Connection**
-     ```bash
-     # Connect to MongoDB shell
-     mongosh
-     
-     # Test connection
-     db.runCommand({ ping: 1 })
-     
-     # Create and use linkcab database
-     use linkcab
-     db.test.insertOne({name: 'test', value: 'test'})
-     
-     # Verify database creation
-     show dbs
-     ```
-
-5. **Start backend server**
-   ```bash
-   npm run dev
-   ```
-
-6. **Verify API is running**
-   Navigate to `http://localhost:5000/api/health`
-
-## 📱 Authentication Flow
-
-### Signup Process
-1. User fills out registration form
-2. System sends OTP to phone number
-3. User verifies OTP
-4. Account is created with JWT token
-5. User is redirected to home page
-
-### Login Process
-1. User enters phone and password
-2. System validates credentials
-3. JWT token is generated
-4. User is authenticated and redirected
-
-## 🎨 Using Modern Graphics Components
-
-### Basic Usage
-```jsx
-import { 
-  GradientBackground, 
-  FloatingShapes, 
-  ModernIcon,
-  GlassCard 
-} from './components/ModernGraphics'
-
-function MyComponent() {
-  return (
-    <GradientBackground>
-      <FloatingShapes count={8} />
-      <GlassCard className="p-6">
-        <ModernIcon icon="🚗" size="lg" />
-        <h2>Welcome to LinkCab</h2>
-      </GlassCard>
-    </GradientBackground>
-  )
-}
-```
-
-### Animation Controls
-```jsx
-// Disable animations for performance
-<GradientBackground animated={false}>
-  <FloatingShapes count={3} animated={false} />
-</GradientBackground>
-
-// Custom animation duration
-<AnimatedProgressBar 
-  progress={75} 
-  duration={3} 
-  color="success" 
-/>
-```
-
-## 🚀 Deployment
-
-For detailed deployment instructions, please refer to the [DEPLOYMENT.md](./DEPLOYMENT.md) file.
-
-### GitHub Deployment
-
+### Health Check Endpoint
 ```bash
-# Initialize git repository
-git init
+GET /api/health
+```
+Returns comprehensive system status including:
+- Server uptime
+- Memory usage
+- Database connection status
+- Environment information
 
-# Add all files to git
-git add .
+### Memory Management
+- **Upload Limits**: Reduced to 5MB to prevent memory issues
+- **Connection Pooling**: Limited to 10 concurrent database connections
+- **Auto-Cleanup**: Automatic cleanup of idle connections
+- **Monitoring**: Real-time memory usage alerts
 
-# Commit the changes
-git commit -m "Initial commit with modern UI components"
+### Database Stability
+- **Auto-Reconnection**: Automatic MongoDB reconnection on failures
+- **Connection Pooling**: Optimized connection management
+- **Timeout Handling**: Configurable connection timeouts
+- **Health Monitoring**: Continuous connection state monitoring
 
-# Add remote repository
-git remote add origin https://github.com/YOUR_USERNAME/linkcab.git
+## 🚀 Quick Start
 
-# Push to GitHub
-git push -u origin main
+### 1. Clone and Setup
+```bash
+git clone https://github.com/yourusername/linkcab-connect-meet-travel--master.git
+cd linkcab-connect-meet-travel--master
+npm install
+cd backend && npm install
 ```
 
-### Vercel Deployment
-
-1. Connect your GitHub repository to Vercel
-2. Configure build settings:
-   - Framework Preset: Vite
-   - Build Command: npm run build
-   - Output Directory: dist
-3. Add environment variables
-4. Deploy
-
-### Phone Verification
-- OTP codes are logged to console (mock implementation)
-- 6-digit codes expire after 5 minutes
-- Maximum 3 attempts per OTP
-- Auto-deletion of expired OTPs
-
-## 🔌 API Endpoints
-
-### Authentication
-- `POST /api/auth/send-otp` - Send OTP to phone
-- `POST /api/auth/verify-otp` - Verify OTP
-- `POST /api/auth/signup` - Register new user
-- `POST /api/auth/login` - User login
-- `POST /api/auth/verify` - Verify phone (requires auth)
-- `GET /api/auth/me` - Get current user
-
-### Profile Management
-- `GET /api/profile` - Get user profile
-- `PUT /api/profile` - Update profile
-- `GET /api/profile/:userId` - Get public profile
-- `POST /api/profile/rate` - Rate a user
-- `GET /api/profile/stats` - Get user statistics
-- `DELETE /api/profile` - Delete account
-
-### Payment & Billing
-- `POST /api/payments/create-order` - Create Razorpay order
-- `POST /api/payments/verify` - Verify payment
-- `GET /api/payments/history` - Payment history
-
-### Chat & Messaging
-- `GET /api/chat/conversations` - Get chat conversations
-- `POST /api/chat/message` - Send message
-- `GET /api/chat/messages/:conversationId` - Get messages
-
-### Health Check
-- `GET /api/health` - API health status
-
-## 👤 User Model
-
-```javascript
-{
-  name: String,           // Required
-  phone: String,          // Required, unique
-  email: String,          // Required, unique
-  password: String,       // Required, hashed
-  age: Number,           // Required, 18-100
-  gender: String,        // male, female, other, prefer-not-to-say
-  rating: Number,        // 0-5, default 0
-  totalRides: Number,    // Default 0
-  isPhoneVerified: Boolean, // Default false
-  isEmailVerified: Boolean, // Default false
-  bio: String,           // Max 200 chars
-  preferences: {
-    smoking: Boolean,
-    music: Boolean,
-    pets: Boolean
-  },
-  emergencyContact: {
-    name: String,
-    phone: String,
-    relationship: String
-  },
-  paymentMethods: [{
-    type: String,
-    details: Object
-  }],
-  rideHistory: [{
-    rideId: ObjectId,
-    date: Date,
-    rating: Number
-  }]
-}
+### 2. Environment Setup
+```bash
+# Backend environment
+cd backend
+cp env.example .env
+# Edit .env with your MongoDB connection string
 ```
 
-## 🎨 Frontend Components
-
-### Pages
-- **Home** - Landing page with hero section and modern graphics
-- **Login** - Phone-based authentication with animated forms
-- **Signup** - Multi-step registration with OTP and modern UI
-- **Profile** - User profile management with avatar upload
-- **CreateRide** - Ride creation form with map integration
-- **RideDetail** - Ride information display with real-time updates
-- **Chat** - Real-time messaging interface
-- **Payment** - Payment processing with Razorpay
-
-### Core Components
-- **Header** - Navigation with auth status and modern design
-- **Footer** - Site footer with links and information
-- **Button** - Reusable button with multiple variants and animations
-- **Card** - Content container with glassmorphism effects
-- **AuthContext** - Authentication state management
-- **ModernGraphics** - Collection of animated UI components
-
-### Advanced Components
-- **MapPicker** - Google Maps integration for location selection
-- **RideSearch** - Advanced ride search with filters
-- **Chat** - Real-time messaging with Socket.io
-- **ReviewForm** - User review and rating system
-- **Testimonials** - User testimonials carousel
-- **AvatarUpload** - Profile picture upload with preview
-- **SubscriptionCheck** - Payment subscription management
-- **PassengerMatches** - AI-powered ride matching
-
-## 🔒 Security Features
-
-- **Password Hashing** - bcryptjs with salt rounds
-- **JWT Tokens** - Secure authentication with expiration
-- **Input Validation** - express-validator for all inputs
-- **Rate Limiting** - Prevents API abuse
-- **CORS** - Cross-origin protection
-- **Helmet** - Security headers
-- **Environment Variables** - Sensitive data protection
-- **Payment Security** - Razorpay secure payment processing
-
-## 🧪 Testing the Application
-
-### MongoDB Connection Troubleshooting
-
-1. **Verify MongoDB Service**
-   ```bash
-   # Windows
-   Get-Service -Name MongoDB* | Select-Object Name, Status
-   
-   # macOS/Linux
-   sudo systemctl status mongod
-   ```
-
-2. **Test MongoDB Connection**
-   ```bash
-   # Connect to MongoDB shell
-   mongosh
-   
-   # Test connection with ping command
-   db.runCommand({ ping: 1 })
-   ```
-
-3. **Create and Verify Database**
-   ```bash
-   # Switch to linkcab database
-   use linkcab
-   
-   # Insert test document to create database
-   db.test.insertOne({name: 'test', value: 'test'})
-   
-   # List all databases to verify creation
-   show dbs
-   
-   # Find documents in test collection
-   db.test.find()
-   ```
-
-4. **Common Issues**
-   - **Connection Refused**: Ensure MongoDB service is running
-   - **Authentication Failed**: Check credentials in connection string
-   - **Database Not Listed**: MongoDB only shows databases with data
-   - **Permission Denied**: Check user permissions
-
-### Mock OTP Testing
-1. Start the backend server
-2. Try to signup with a phone number
-3. Check the console logs for the OTP code
-4. Use the displayed OTP to verify
-
-### Sample User Data
-```javascript
-{
-  name: "John Doe",
-  phone: "+1234567890",
-  email: "john@example.com",
-  password: "password123",
-  age: 25,
-  gender: "male"
-}
+### 3. Test Database Connection
+```bash
+cd backend
+node test-connection.js
 ```
 
-## 🚀 Deployment
+### 4. Start Development
+```bash
+# Backend (Terminal 1)
+cd backend
+npm start
 
-### Frontend (Vercel/Netlify)
-1. Build the project: `npm run build`
-2. Deploy the `dist` folder
-3. Set environment variables for API URL
-
-### Backend (Heroku/Railway)
-1. Set up MongoDB Atlas
-2. Configure environment variables
-3. Deploy to your preferred platform
-
-### Environment Variables for Production
-```env
-# Server Configuration
-PORT=5000
-NODE_ENV=production
-
-# MongoDB Connection
-# For MongoDB Atlas
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/linkcab
-# For local MongoDB
-# MONGODB_URI=mongodb://localhost:27017/linkcab
-
-# JWT Secret
-JWT_SECRET=your-production-jwt-secret
-JWT_EXPIRE=30d
-
-# Rate Limiting
-RATE_LIMIT_WINDOW=900000
-RATE_LIMIT_MAX=100
-
-# CORS Configuration
-CORS_ORIGIN=https://yourdomain.com
-
-# Razorpay Configuration
-RAZORPAY_KEY_ID=your_razorpay_key_id
-RAZORPAY_KEY_SECRET=your_razorpay_secret_key
-FRONTEND_URL=https://yourdomain.com
-
-# Additional services
-# Configure as needed for production
+# Frontend (Terminal 2)
+npm run dev
 ```
 
-## 🔧 Development Scripts
+### 5. Deploy to Railway
+```bash
+cd backend
+.\deploy-railway.bat
+```
 
-### Frontend
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run lint` - Run ESLint
-- `npm run preview` - Preview production build
+## 🔧 Configuration
 
-### Backend
-- `npm run dev` - Start development server with nodemon
-- `npm start` - Start production server
-- `npm test` - Run tests (to be implemented)
+### MongoDB Atlas Setup
+1. Create MongoDB Atlas cluster
+2. Get connection string
+3. Update `MONGODB_URI` in environment variables
+4. Test connection with `node test-connection.js`
 
-## 🛠️ Development Environment Tips
+### Railway Deployment
+1. Install Railway CLI: `npm install -g @railway/cli`
+2. Login: `railway login`
+3. Link project: `railway link`
+4. Set environment variables
+5. Deploy: `railway up`
 
-### Using Git Bash on Windows
+## 📊 Performance & Monitoring
 
-If you encounter PowerShell execution policy restrictions when running npm commands, Git Bash provides a Unix-like environment that can help bypass these issues:
+### Production Metrics
+- **Memory Usage**: Optimized for Railway's 512MB limit
+- **Connection Pool**: 10 concurrent database connections
+- **Rate Limiting**: 50 requests per 15 minutes per IP
+- **Health Checks**: Every 30 seconds for database, every minute for memory
 
-1. **Install Git Bash** if not already installed (comes with Git for Windows)
-
-2. **Open Git Bash** in your project directory
-
-3. **Navigate to backend directory**
-   ```bash
-   cd backend
-   ```
-
-4. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-5. **Start the server**
-   ```bash
-   npm run dev
-   # or
-   node server.js
-   ```
-
-6. **MongoDB commands in Git Bash**
-   ```bash
-   # Connect to MongoDB
-   mongosh
-   
-   # Test connection
-   db.runCommand({ ping: 1 })
-   
-   # Create database
-   use linkcab
-   db.test.insertOne({name: 'test', value: 'test'})
-   ```
-
-Git Bash is particularly useful for Node.js development on Windows as it provides a consistent command-line experience across operating systems and avoids PowerShell's execution policy restrictions.
+### Stability Features
+- **Graceful Shutdown**: Proper cleanup on SIGTERM/SIGINT
+- **Error Recovery**: Automatic recovery from most errors
+- **Connection Resilience**: MongoDB connection failover
+- **Memory Protection**: Upload limits and monitoring
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests if applicable
+4. Test thoroughly (including crash scenarios)
 5. Submit a pull request
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🆘 Support
 
 For support and questions:
-- Check the API documentation in `backend/README.md`
-- Review the frontend setup in this README
-- Open an issue for bugs or feature requests
+- Create an issue on GitHub
+- Check the deployment guides in the project
+- Review Railway-specific documentation
 
-## 🔮 Future Enhancements
+---
 
-- Real SMS integration for OTP
-- Email verification
-- Push notifications
-- Real-time chat with file sharing
-- Advanced payment integration
-- Ride tracking with GPS
-- Driver verification system
-- Advanced search and filters
-- AI-powered route optimization
-- Social features and ride sharing
-- Emergency contact integration
-- Ride scheduling and recurring rides
+**Built with ❤️ for stable, production-ready ride-sharing applications**

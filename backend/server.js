@@ -43,9 +43,15 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// Body parsing middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
+// Body parsing middleware with limits
+app.use(express.json({ 
+  limit: '5mb', // Reduced from 10mb to prevent memory issues
+  strict: true 
+}));
+app.use(express.urlencoded({ 
+  extended: true, 
+  limit: '5mb' 
+}));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -53,7 +59,10 @@ app.get('/api/health', (req, res) => {
     status: 'OK', 
     message: 'LinkCab API is running',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    version: process.version
   });
 });
 
@@ -94,15 +103,102 @@ app.use('*', (req, res) => {
   });
 });
 
-// Global error handler
+// Global error handler with crash prevention
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.status || 500).json({
+  console.error('🚨 Global error handler:', err.stack);
+  
+  // Don't crash on client errors
+  if (err.status === 400 || err.status === 401 || err.status === 403 || err.status === 404) {
+    return res.status(err.status).json({
+      success: false,
+      message: err.message || 'Client error',
+      timestamp: new Date().toISOString()
+    });
+  }
+  
+  // Log critical errors but don't crash
+  console.error('🚨 Critical error:', {
+    message: err.message,
+    stack: err.stack,
+    url: req.url,
+    method: req.method,
+    timestamp: new Date().toISOString()
+  });
+  
+  res.status(500).json({
     success: false,
-    message: err.message || 'Internal server error',
+    message: 'Internal server error',
+    timestamp: new Date().toISOString(),
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
 });
+
+// Graceful shutdown handling
+const gracefulShutdown = async (signal) => {
+  console.log(`\n🔄 Received ${signal}. Starting graceful shutdown...`);
+  
+  try {
+    // Close HTTP server
+    httpServer.close(() => {
+      console.log('🔌 HTTP server closed');
+    });
+    
+    // Close Socket.IO
+    if (io) {
+      io.close(() => {
+        console.log('🔌 Socket.IO server closed');
+      });
+    }
+    
+    // Close database connection
+    const mongoose = await import('mongoose');
+    if (mongoose.default.connection.readyState === 1) {
+      await mongoose.default.connection.close();
+      console.log('📦 MongoDB connection closed');
+    }
+    
+    console.log('✅ Graceful shutdown completed');
+    process.exit(0);
+  } catch (error) {
+    console.error('❌ Error during graceful shutdown:', error);
+    process.exit(1);
+  }
+};
+
+// Handle various shutdown signals
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+process.on('SIGUSR2', () => gracefulShutdown('SIGUSR2')); // For nodemon
+
+// Uncaught exception handler
+process.on('uncaughtException', (err) => {
+  console.error('🚨 Uncaught Exception:', err);
+  console.error('Stack:', err.stack);
+  // Don't exit immediately, let the app try to recover
+});
+
+// Unhandled rejection handler
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('🚨 Unhandled Rejection at:', promise);
+  console.error('Reason:', reason);
+  // Don't exit immediately, let the app try to recover
+});
+
+// Memory monitoring
+setInterval(() => {
+  const memUsage = process.memoryUsage();
+  const memUsageMB = {
+    rss: Math.round(memUsage.rss / 1024 / 1024),
+    heapTotal: Math.round(memUsage.heapTotal / 1024 / 1024),
+    heapUsed: Math.round(memUsage.heapUsed / 1024 / 1024),
+    external: Math.round(memUsage.external / 1024 / 1024)
+  };
+  
+  // Log if memory usage is high
+  if (memUsageMB.heapUsed > 100) { // 100MB threshold
+    console.warn('⚠️ High memory usage:', memUsageMB);
+  }
+}, 60000); // Check every minute
 
 httpServer.listen(PORT, () => {
   console.log(`🚀 LinkCab API server running on port ${PORT}`);
@@ -110,4 +206,5 @@ httpServer.listen(PORT, () => {
   console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
   console.log(`🔌 Socket.IO initialized`);
   console.log(`📡 CORS enabled for: ${allowedOrigins.join(', ')}`);
+  console.log(`🛡️ Crash prevention enabled`);
 });
