@@ -1,0 +1,5 @@
+[33m448012e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Add comprehensive crash prevention and Railway stability
+[33mebd3b44[m  CRITICAL FIX: Remove Sequelize references from MongoDB project - Delete incompatible seed.js and migrate.js scripts - Create MongoDB-compatible seed-mongodb.js - Fix database compatibility issues that were causing deployment failures
+[33m9fd6525[m  CRITICAL FIX: Resolve white screen issues - Remove duplicate AuthProvider/SocketProvider - Fix Socket URL environment variable - Fix API base URL construction
+[33m5a55820[m  CRITICAL FIX: Remove root Railway configs causing frontend deployment instead of backend
+[33md9fcd90[m  Improve Railway configuration: Simplify nixpacks setup for backend deployment

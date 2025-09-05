@@ -303,9 +303,19 @@ const PremiumFeatures = () => {
                 size="lg" 
                 variant="outline"
                 onClick={() => setIsTourOpen(true)}
+                className="border-blue-500 text-blue-600 hover:bg-blue-50"
               >
                 <span className="mr-2">🎬</span>
-                Take Another Tour
+                Take Interactive Tour
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline"
+                onClick={() => setIsTourOpen(true)}
+                className="border-green-500 text-green-600 hover:bg-green-50"
+              >
+                <span className="mr-2">🧪</span>
+                Test Premium Features
               </Button>
               <Link to="/dashboard">
                 <Button variant="outline" size="lg">

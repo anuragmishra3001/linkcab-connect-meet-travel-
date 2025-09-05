@@ -301,15 +301,36 @@ const Dashboard = () => {
                      Edit Profile
                    </Button>
                    
-                   {!user?.isSubscribed && (
+                   {!user?.isSubscribed ? (
                      <div className="mt-4 p-4 bg-gradient-to-r from-primary-50 to-secondary-50 border border-primary-200 rounded-xl">
                        <h4 className="font-semibold text-gray-900 mb-2">Upgrade to Premium</h4>
                        <p className="text-sm text-gray-600 mb-3">
                          Unlock unlimited rides, priority support, and premium features
                        </p>
-                       <Link to="/payment">
-                         <Button size="sm" className="w-full">
-                           Choose a Plan
+                       <div className="space-y-2">
+                         <Link to="/payment">
+                           <Button size="sm" className="w-full">
+                             Choose a Plan
+                           </Button>
+                         </Link>
+                         <Link to="/premium-features">
+                           <Button size="sm" variant="outline" className="w-full border-green-500 text-green-600 hover:bg-green-50">
+                             <span className="mr-2">🧪</span>
+                             Test Premium Features
+                           </Button>
+                         </Link>
+                       </div>
+                     </div>
+                   ) : (
+                     <div className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl">
+                       <h4 className="font-semibold text-gray-900 mb-2">Premium Member</h4>
+                       <p className="text-sm text-gray-600 mb-3">
+                         You have access to all premium features
+                       </p>
+                       <Link to="/premium-features">
+                         <Button size="sm" variant="outline" className="w-full border-green-500 text-green-600 hover:bg-green-50">
+                           <span className="mr-2">⭐</span>
+                           Explore Premium Features
                          </Button>
                        </Link>
                      </div>

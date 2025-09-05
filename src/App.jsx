@@ -14,12 +14,15 @@ import Payment from './pages/Payment'
 import PaymentSuccess from './pages/PaymentSuccess'
 import PaymentCancel from './pages/PaymentCancel'
 import RazorpayTest from './pages/RazorpayTest'
+import DevTest from './pages/DevTest'
 import { SmoothScrollIndicator } from './components/ModernGraphics'
+import DevModeIndicator from './components/DevModeIndicator'
 
 function App() {
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
+        <DevModeIndicator />
         <Header />
         <main className="flex-1 pt-16 md:pt-20">
           <Routes>
@@ -36,6 +39,7 @@ function App() {
             <Route path="/payment/success" element={<PaymentSuccess />} />
             <Route path="/payment/cancel" element={<PaymentCancel />} />
             <Route path="/razorpay-test" element={<RazorpayTest />} />
+            <Route path="/dev-test" element={<DevTest />} />
           </Routes>
         </main>
         <Footer />

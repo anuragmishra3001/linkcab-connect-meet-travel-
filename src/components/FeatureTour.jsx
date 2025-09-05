@@ -10,15 +10,18 @@ import {
 const FeatureTour = ({ isOpen, onClose }) => {
   const [currentStep, setCurrentStep] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [testMode, setTestMode] = useState(false)
+  const [testResults, setTestResults] = useState({})
 
   const tourSteps = [
     {
       id: 'welcome',
       title: 'Welcome to Premium Features Tour!',
-      description: 'Let\'s explore what makes LinkCab Premium special. You\'ll see how our advanced features can enhance your ride-sharing experience.',
+      description: 'Let\'s explore what makes LinkCab Premium special. You\'ll see how our advanced features can enhance your ride-sharing experience. You can also test premium features in demo mode!',
       icon: '🚀',
       color: 'from-blue-500 to-indigo-600',
-      action: 'Start Tour'
+      action: 'Start Tour',
+      testable: false
     },
     {
       id: 'advanced-matching',
@@ -35,7 +38,9 @@ const FeatureTour = ({ isOpen, onClose }) => {
           musicTaste: 'Similar'
         }
       },
-      action: 'See How It Works'
+      action: 'See How It Works',
+      testable: true,
+      testAction: 'Test Matching Algorithm'
     },
     {
       id: 'real-time-chat',
@@ -51,7 +56,9 @@ const FeatureTour = ({ isOpen, onClose }) => {
           { sender: 'you', text: 'Perfect! See you soon 🚗', time: '2:32 PM' }
         ]
       },
-      action: 'Try Chat Demo'
+      action: 'Try Chat Demo',
+      testable: true,
+      testAction: 'Test Live Chat'
     },
     {
       id: 'analytics',
@@ -68,7 +75,9 @@ const FeatureTour = ({ isOpen, onClose }) => {
           monthlyGrowth: 15
         }
       },
-      action: 'View Analytics'
+      action: 'View Analytics',
+      testable: true,
+      testAction: 'Generate Report'
     },
     {
       id: 'priority-support',
@@ -85,7 +94,9 @@ const FeatureTour = ({ isOpen, onClose }) => {
           responseTime: '1.5 min'
         }
       },
-      action: 'Experience Support'
+      action: 'Experience Support',
+      testable: true,
+      testAction: 'Connect to Support'
     },
     {
       id: 'exclusive-events',
@@ -102,7 +113,9 @@ const FeatureTour = ({ isOpen, onClose }) => {
           location: 'Downtown Hub'
         }
       },
-      action: 'See Events'
+      action: 'See Events',
+      testable: true,
+      testAction: 'RSVP to Event'
     },
     {
       id: 'finale',
@@ -110,7 +123,8 @@ const FeatureTour = ({ isOpen, onClose }) => {
       description: 'You\'ve seen what Premium has to offer. Join thousands of users who are already enjoying these amazing features!',
       icon: '⭐',
       color: 'from-pink-500 to-rose-600',
-      action: 'Choose Your Plan'
+      action: 'Choose Your Plan',
+      testable: false
     }
   ]
 
@@ -138,6 +152,61 @@ const FeatureTour = ({ isOpen, onClose }) => {
     setIsPlaying(false)
   }
 
+  const testFeature = async (featureId) => {
+    setTestMode(true)
+    
+    // Simulate testing different features
+    const testSimulations = {
+      'advanced-matching': {
+        message: 'Testing AI matching algorithm...',
+        duration: 2000,
+        result: 'Found 3 compatible ride partners with 95% compatibility!'
+      },
+      'real-time-chat': {
+        message: 'Connecting to chat server...',
+        duration: 1500,
+        result: 'Chat connected! You can now message ride partners instantly.'
+      },
+      'analytics': {
+        message: 'Generating your ride analytics report...',
+        duration: 2500,
+        result: 'Report generated! You have 24 rides with 4.8★ average rating.'
+      },
+      'priority-support': {
+        message: 'Connecting to priority support...',
+        duration: 1000,
+        result: 'Connected to Sarah (Premium Support Agent) in 1.2 seconds!'
+      },
+      'exclusive-events': {
+        message: 'Checking available events...',
+        duration: 1800,
+        result: 'RSVP successful! You\'re now registered for the Premium Meetup.'
+      }
+    }
+
+    const test = testSimulations[featureId]
+    if (test) {
+      // Show loading message
+      setTestResults(prev => ({
+        ...prev,
+        [featureId]: { status: 'loading', message: test.message }
+      }))
+
+      // Simulate test duration
+      setTimeout(() => {
+        setTestResults(prev => ({
+          ...prev,
+          [featureId]: { 
+            status: 'success', 
+            message: test.result,
+            timestamp: new Date().toLocaleTimeString()
+          }
+        }))
+        setTestMode(false)
+      }, test.duration)
+    }
+  }
+
   useEffect(() => {
     let interval
     if (isPlaying && currentStep < tourSteps.length - 1) {
@@ -154,8 +223,40 @@ const FeatureTour = ({ isOpen, onClose }) => {
     }
   }, [currentStep, tourSteps.length])
 
-  const renderDemo = (demo) => {
+  const renderDemo = (demo, featureId) => {
     if (!demo) return null
+
+    // Show test results if available
+    const testResult = testResults[featureId]
+    if (testResult) {
+      return (
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 mt-4">
+          <div className="flex items-center mb-3">
+            <span className="text-2xl mr-3">
+              {testResult.status === 'loading' ? '⏳' : '✅'}
+            </span>
+            <div>
+              <div className="font-medium">
+                {testResult.status === 'loading' ? 'Testing Feature...' : 'Test Complete!'}
+              </div>
+              {testResult.timestamp && (
+                <div className="text-sm text-gray-600">{testResult.timestamp}</div>
+              )}
+            </div>
+          </div>
+          <div className={`text-sm ${testResult.status === 'loading' ? 'text-blue-600' : 'text-green-600'}`}>
+            {testResult.message}
+          </div>
+          {testResult.status === 'loading' && (
+            <div className="mt-3">
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{width: '60%'}}></div>
+              </div>
+            </div>
+          )}
+        </div>
+      )
+    }
 
     switch (demo.type) {
       case 'matching':
@@ -345,7 +446,7 @@ const FeatureTour = ({ isOpen, onClose }) => {
               </p>
 
               {/* Demo Content */}
-              {renderDemo(currentStepData.demo)}
+              {renderDemo(currentStepData.demo, currentStepData.id)}
 
               {/* Auto-play Controls */}
               {currentStep < tourSteps.length - 1 && (
@@ -383,6 +484,19 @@ const FeatureTour = ({ isOpen, onClose }) => {
                 {currentStep > 0 && (
                   <Button variant="outline" onClick={prevStep}>
                     ← Previous
+                  </Button>
+                )}
+                
+                {/* Test Feature Button */}
+                {currentStepData.testable && !testResults[currentStepData.id] && (
+                  <Button 
+                    variant="outline" 
+                    onClick={() => testFeature(currentStepData.id)}
+                    disabled={testMode}
+                    className="border-green-500 text-green-600 hover:bg-green-50"
+                  >
+                    <span className="mr-2">🧪</span>
+                    {currentStepData.testAction}
                   </Button>
                 )}
                 

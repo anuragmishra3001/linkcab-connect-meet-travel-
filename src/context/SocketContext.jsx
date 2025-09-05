@@ -15,14 +15,35 @@ export const useSocket = () => {
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [connected, setConnected] = useState(false);
-  const { user } = useAuth();
+  const { user, isDevMode } = useAuth();
   
   // Initialize socket connection when user is authenticated
   useEffect(() => {
     let socketInstance = null;
     
-    // Only connect if user is logged in
-    if (user) {
+    // In development mode, simulate socket connection
+    if (isDevMode && user) {
+      console.log('[DEV MODE] Socket connection simulated');
+      setConnected(true);
+      // Create a mock socket object
+      const mockSocket = {
+        emit: (event, data) => {
+          console.log(`[DEV MODE] Socket emit: ${event}`, data);
+        },
+        on: (event, callback) => {
+          console.log(`[DEV MODE] Socket listener: ${event}`);
+        },
+        disconnect: () => {
+          console.log('[DEV MODE] Socket disconnected');
+          setConnected(false);
+        }
+      };
+      setSocket(mockSocket);
+      return;
+    }
+    
+    // Only connect if user is logged in and not in dev mode
+    if (user && !isDevMode) {
       const token = localStorage.getItem('token');
       const SOCKET_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       
@@ -63,7 +84,7 @@ export const SocketProvider = ({ children }) => {
         setConnected(false);
       }
     };
-  }, [user]);
+  }, [user, isDevMode]);
   
   // Join a ride chat room
   const joinRideRoom = (rideId) => {
