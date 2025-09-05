@@ -51,9 +51,9 @@ const FeatureTour = ({ isOpen, onClose }) => {
       demo: {
         type: 'chat',
         messages: [
-          { sender: 'you', text: 'Hi! Are you still going to the airport?', time: '2:30 PM' },
-          { sender: 'partner', text: 'Yes, leaving in 10 minutes!', time: '2:31 PM' },
-          { sender: 'you', text: 'Perfect! See you soon 🚗', time: '2:32 PM' }
+          { sender: 'you', text: 'Hi Arjun! Are you still going to India Gate?', time: '2:30 PM' },
+          { sender: 'partner', text: 'Yes, leaving from CP in 10 minutes!', time: '2:31 PM' },
+          { sender: 'you', text: 'Perfect! I\'ll be at the metro station 🚗', time: '2:32 PM' }
         ]
       },
       action: 'Try Chat Demo',
@@ -71,7 +71,7 @@ const FeatureTour = ({ isOpen, onClose }) => {
         data: {
           totalRides: 24,
           avgRating: 4.8,
-          earnings: 480,
+          earnings: 4800,
           monthlyGrowth: 15
         }
       },
@@ -89,7 +89,7 @@ const FeatureTour = ({ isOpen, onClose }) => {
         type: 'support',
         data: {
           queuePosition: 1,
-          agent: 'Sarah (Premium)',
+          agent: 'Priya (Premium)',
           status: 'Connected',
           responseTime: '1.5 min'
         }
