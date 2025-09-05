@@ -40,55 +40,55 @@ const Dashboard = () => {
         // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, 1000))
         
-        // Mock data - replace with actual API calls
+        // Mock data - Indian locations and pricing
         const mockRides = [
           {
             id: 1,
-            startLocation: 'New York, NY',
-            endLocation: 'Boston, MA',
+            startLocation: 'Connaught Place, New Delhi',
+            endLocation: 'India Gate, New Delhi',
             date: '2024-01-15',
             time: '09:00',
-            price: 45,
+            price: 150,
             status: 'completed',
             passengers: 3,
             rating: 4.8,
-            earnings: 135
+            earnings: 450
           },
           {
             id: 2,
-            startLocation: 'Boston, MA',
-            endLocation: 'New York, NY',
+            startLocation: 'Marine Drive, Mumbai',
+            endLocation: 'Gateway of India, Mumbai',
             date: '2024-01-20',
             time: '14:00',
-            price: 50,
+            price: 120,
             status: 'completed',
             passengers: 2,
             rating: 4.9,
-            earnings: 100
+            earnings: 240
           },
           {
             id: 3,
-            startLocation: 'New York, NY',
-            endLocation: 'Philadelphia, PA',
+            startLocation: 'Kempegowda Airport, Bangalore',
+            endLocation: 'MG Road, Bangalore',
             date: '2024-01-25',
             time: '10:30',
-            price: 35,
+            price: 250,
             status: 'completed',
             passengers: 4,
             rating: 4.7,
-            earnings: 140
+            earnings: 1000
           },
           {
             id: 4,
-            startLocation: 'Philadelphia, PA',
-            endLocation: 'Washington, DC',
+            startLocation: 'Park Street, Kolkata',
+            endLocation: 'Victoria Memorial, Kolkata',
             date: '2024-02-01',
             time: '08:00',
-            price: 40,
+            price: 100,
             status: 'completed',
             passengers: 3,
             rating: 4.6,
-            earnings: 120
+            earnings: 300
           }
         ]
 

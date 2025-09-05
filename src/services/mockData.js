@@ -1,4 +1,5 @@
 // Mock data for development mode - Indian users and places
+console.log('🇮🇳 Loading Indian mock data...');
 export const mockUsers = [
   {
     _id: 'user-1',

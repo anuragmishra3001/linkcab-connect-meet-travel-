@@ -28,14 +28,18 @@ export const AuthProvider = ({ children }) => {
 
     if (DEV_MODE) {
       // Development mode: Create a mock user for testing
+      // Clear old data first
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      
       const mockUser = {
         _id: 'dev-user-123',
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        phone: '+1234567890',
+        name: 'Arjun Sharma',
+        email: 'arjun.sharma@gmail.com',
+        phone: '+919876543210',
         age: 28,
         gender: 'male',
-        bio: 'I love traveling and meeting new people!',
+        bio: 'I love traveling and meeting new people! Safe driver with 5+ years experience.',
         isPhoneVerified: true,
         rating: 4.8,
         totalRides: 15,
@@ -80,12 +84,12 @@ export const AuthProvider = ({ children }) => {
       // Development mode: Always succeed with mock user
       const mockUser = {
         _id: 'dev-user-123',
-        name: 'John Doe',
-        email: 'john.doe@example.com',
+        name: 'Arjun Sharma',
+        email: 'arjun.sharma@gmail.com',
         phone: phone,
         age: 28,
         gender: 'male',
-        bio: 'I love traveling and meeting new people!',
+        bio: 'I love traveling and meeting new people! Safe driver with 5+ years experience.',
         isPhoneVerified: true,
         rating: 4.8,
         totalRides: 15,
