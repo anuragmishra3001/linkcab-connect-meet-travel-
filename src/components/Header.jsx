@@ -105,16 +105,29 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
+          <Link to="/" className="flex items-center space-x-3 group">
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
-              className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:shadow-xl transition-all duration-300"
+              className="relative w-12 h-12 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
-              L
+              {/* Modern car/connection icon */}
+              <div className="relative">
+                <div className="w-6 h-4 bg-white rounded-sm relative">
+                  <div className="absolute -top-1 left-1 w-1 h-1 bg-white rounded-full"></div>
+                  <div className="absolute -top-1 right-1 w-1 h-1 bg-white rounded-full"></div>
+                  <div className="absolute -bottom-1 left-0.5 w-1 h-1 bg-white rounded-full"></div>
+                  <div className="absolute -bottom-1 right-0.5 w-1 h-1 bg-white rounded-full"></div>
+                </div>
+                <div className="absolute -right-1 top-1 w-2 h-0.5 bg-white rounded-full opacity-60"></div>
+                <div className="absolute -right-1 bottom-1 w-2 h-0.5 bg-white rounded-full opacity-60"></div>
+              </div>
+              {/* Connection dots */}
+              <div className="absolute -right-1 top-2 w-1 h-1 bg-white rounded-full opacity-80"></div>
+              <div className="absolute -right-1 bottom-2 w-1 h-1 bg-white rounded-full opacity-80"></div>
             </motion.div>
             <motion.span 
-              className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent"
+              className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
             >

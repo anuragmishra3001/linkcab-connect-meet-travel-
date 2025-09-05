@@ -50,11 +50,24 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
           {/* Brand section */}
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center space-x-2 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary-600 to-secondary-600 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-lg">LC</span>
+            <Link to="/" className="flex items-center space-x-3 mb-6">
+              <div className="relative w-12 h-12 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden">
+                {/* Modern car/connection icon */}
+                <div className="relative">
+                  <div className="w-6 h-4 bg-white rounded-sm relative">
+                    <div className="absolute -top-1 left-1 w-1 h-1 bg-white rounded-full"></div>
+                    <div className="absolute -top-1 right-1 w-1 h-1 bg-white rounded-full"></div>
+                    <div className="absolute -bottom-1 left-0.5 w-1 h-1 bg-white rounded-full"></div>
+                    <div className="absolute -bottom-1 right-0.5 w-1 h-1 bg-white rounded-full"></div>
+                  </div>
+                  <div className="absolute -right-1 top-1 w-2 h-0.5 bg-white rounded-full opacity-60"></div>
+                  <div className="absolute -right-1 bottom-1 w-2 h-0.5 bg-white rounded-full opacity-60"></div>
+                </div>
+                {/* Connection dots */}
+                <div className="absolute -right-1 top-2 w-1 h-1 bg-white rounded-full opacity-80"></div>
+                <div className="absolute -right-1 bottom-2 w-1 h-1 bg-white rounded-full opacity-80"></div>
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
                 LinkCab
               </span>
             </Link>

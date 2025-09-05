@@ -16,6 +16,10 @@
     }
   ],
   "env": {
-    "VITE_DEV_MODE": "false"
-  }
+    "VITE_DEV_MODE": "false",
+    "NODE_ENV": "production"
+  },
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install"
 }

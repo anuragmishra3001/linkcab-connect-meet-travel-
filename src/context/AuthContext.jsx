@@ -5,7 +5,7 @@ import { subscriptionService, checkPremiumAccess } from '../services/subscriptio
 const AuthContext = createContext();
 
 // Development mode - enable for testing without backend
-const DEV_MODE = true;
+const DEV_MODE = import.meta.env.VITE_DEV_MODE === 'true' || import.meta.env.DEV;
 console.log('🔍 DEV_MODE is set to:', DEV_MODE);
 
 export const useAuth = () => {

@@ -11,7 +11,7 @@ import {
 } from './mockAPI.js';
 
 // Development mode check
-const DEV_MODE = true; // Set to true for development mode
+const DEV_MODE = import.meta.env.VITE_DEV_MODE === 'true' || import.meta.env.DEV;
 
 // Create axios instance with base configuration
 // For production, you'll need to set VITE_API_URL in Vercel environment variables
